@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Equipos NBA - Datos Reales</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background: #f4f4f4; }
+    button { padding: 10px 15px; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <h1>Equipos de la NBA</h1>
+  <button onclick="exportarExcel()">Exportar a Excel</button>
+  <table id="tabla">
+    <thead>
+      <tr>
+        <th>Nombre</th><th>Ciudad</th><th>Abreviación</th><th>Conferencia</th><th>División</th>
+      </tr>
+    </thead>
+    <tbody id="contenido">
+      <tr><td colspan="5">Cargando datos...</td></tr>
+    </tbody>
+  </table>
+
+  <script>
+    async function cargarDatos() {
+      try {
+        const resp = await fetch('https://www.balldontlie.io/api/v1/teams');
+        const json = await resp.json();
+        const tbody = document.getElementById('contenido');
+        tbody.innerHTML = '';
+        json.data.forEach(t => {
+          tbody.innerHTML += `
+            <tr>
+              <td>${t.full_name}</td>
+              <td>${t.city}</td>
+              <td>${t.abbreviation}</td>
+              <td>${t.conference}</td>
+              <td>${t.division}</td>
+            </tr>`;
+        });
+      } catch (e) {
+        document.getElementById('contenido').innerHTML =
+          `<tr><td colspan="5">Error: ${e.message}</td></tr>`;
+      }
+    }
+
+    function exportarExcel() {
+      const tbl = document.getElementById('tabla').outerHTML;
+      const blob = new Blob(["\uFEFF" + tbl], { type: 'application/vnd.ms-excel' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'equipos_nba.xls';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    cargarDatos();
+  </script>
+</body>
+</html>
