@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Poker</title>
+  <style>
+    body {
+      margin: 0;
+      background: #0a0000;
+      font-family: 'Courier New', monospace;
+      color: #e0dede;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      height: 100vh;
+      padding-top: 2rem;
+    }
+
+    .telefono {
+      background: #1a1a1a;
+      border: 3px solid #333;
+      border-radius: 20px;
+      width: 350px;
+      max-width: 95%;
+      height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 0 25px #330000;
+      display: flex;
+      flex-direction: column;
+      padding: 1rem;
+    }
+
+    .titulo {
+      text-align: center;
+      color: crimson;
+      font-size: 1.5rem;
+      text-shadow: 0 0 10px red;
+      margin-bottom: 1rem;
+    }
+
+    .mensaje {
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 10px;
+      max-width: 80%;
+      position: relative;
+    }
+
+    .recibido {
+      background: #330000;
+      align-self: flex-start;
+    }
+
+    .enviado {
+      background: #003300;
+      align-self: flex-end;
+      text-align: right;
+    }
+
+    .hora {
+      font-size: 0.75rem;
+      color: #aaa;
+      margin-top: 5px;
+    }
+
+    .poetico {
+      font-style: italic;
+      color: #f8d;
+      text-shadow: 0 0 5px #f0f;
+    }
+  </style>
+</head>
+<body>
+  <div class="telefono" id="telefono">
+    <div class="titulo">📱 El Celular de Judas</div>
+  </div>
+
+  <script>
+    const mensajes = [
+      { tipo: "recibido", texto: "¿Dónde estás, Judas? El Maestro pregunta por ti.", hoRam: "18:23" },
+      { tipo: "enviado", texto: "Solo necesitaba ver el cielo. Está muy rojo hoy.", hora: "18:25" },
+      { tipo: "recibido", texto: "¿Te parece bonita esa chica?", hora: "18:29" },
+      { tipo: "enviado", texto: "No sé si es belleza… o una trampa vestida de luz.", hora: "18:30", clase: "poetico" },
+      { tipo: "recibido", texto: "Judas, no olvides: 30 monedas, esta noche.", hora: "20:01" },
+      { tipo: "enviado", texto: "El que yo bese… ése es. Tomadlo con cuidado.", hora: "20:03" },
+      { tipo: "recibido", texto: "¿Por qué lo hiciste?", hora: "00:10" },
+      { tipo: "enviado", texto: "Me miró... y en sus ojos no había condena. Solo eternidad.", hora: "00:12", clase: "poetico" },
+      { tipo: "recibido", texto: "La soga no borra la culpa, Judas.", hora: "04:00" },
+      { tipo: "enviado", texto: "La soga no… pero quizás sí el silencio.", hora: "04:01" }
+    ];
+
+    const telefono = document.getElementById("telefono");
+    let index = 0;
+
+    function mostrarMensaje() {
+      if (index >= mensajes.length) return;
+      const msg = mensajes[index];
+      const div = document.createElement("div");
+      div.className = `mensaje ${msg.tipo}`;
+      if (msg.clase) div.classList.add(msg.clase);
+      div.innerHTML = `<div>${msg.texto}</div><div class="hora">${msg.hora}</div>`;
+      telefono.appendChild(div);
+      telefono.scrollTop = telefono.scrollHeight;
+      index++;
+      setTimeout(mostrarMensaje, 3000);
+    }
+
+    mostrarMensaje();
+  </script>
+</body>
+  </html>
